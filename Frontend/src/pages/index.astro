@@ -1,0 +1,75 @@
+---
+// --- ZONA DE JAVASCRIPT (Servidor) ---
+import { client, urlFor } from '../lib/sanity';
+
+// 1. Pedimos los productos a Sanity (GROQ Query)
+const productos = await client.fetch(`*[_type == "producto"]`);
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Catálogo 3D</title>
+    <meta name="viewport" content="width=device-width" />
+  </head>
+  <body>
+    <h1>Mis Impresiones 3D</h1>
+
+    <div class="grid-productos">
+      {productos.map((producto) => (
+        <div class="tarjeta">
+          {producto.imagen && (
+            <img 
+              src={urlFor(producto.imagen).width(300).url()} 
+              alt={producto.nombre} 
+            />
+          )}
+          
+          <h2>{producto.nombre}</h2>
+          <p class="precio">${producto.precio} MXN</p>
+          
+          <button 
+			class="btn-whatsapp" 
+			data-nombre={producto.nombre} 
+			data-precio={producto.precio}
+			>
+			Pedir por WhatsApp
+		  </button>
+        </div>
+      ))}
+    </div>
+
+    <style>
+      body { font-family: sans-serif; padding: 2rem; background: #222; color: white; }
+      .grid-productos { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+      .tarjeta { border: 1px solid #444; padding: 10px; border-radius: 8px; background: #333; }
+      img { width: 100%; height: auto; border-radius: 4px; }
+      .precio { color: #4ade80; font-weight: bold; font-size: 1.2rem; }
+      button { background: #25D366; color: white; border: none; padding: 10px; width: 100%; cursor: pointer; border-radius: 5px; margin-top: 10px;}
+    </style>
+	<script>
+  // 1. Buscamos todos los botones en la página
+  const botones = document.querySelectorAll('.btn-whatsapp');
+
+  // 2. Le damos instrucciones a cada uno
+  botones.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      // Leemos los datos guardados en el botón
+      const nombre = e.target.dataset.nombre;
+      const precio = e.target.dataset.precio;
+      
+      // TU NÚMERO AQUÍ (Ponlo con código de país, sin el +)
+      // Ejemplo México: 521 + lada + numero
+      const miNumero = "5214922177766"; 
+
+      // Creamos el mensaje
+      const mensaje = `Hola! Me interesa imprimir el modelo: *${nombre}* que vi en tu catálogo`;
+
+      // Abrimos WhatsApp
+      const url = `https://wa.me/${miNumero}?text=${encodeURIComponent(mensaje)}`;
+      window.open(url, '_blank');
+    });
+  });
+</script>
+  </body>
+</html>
