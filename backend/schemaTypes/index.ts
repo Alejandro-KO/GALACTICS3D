@@ -105,4 +105,6 @@ import {settingsType} from './singletons/settingsType'
 
 const singletons = [homeType, settingsType]
 
-export const schemaTypes = [...annotations, ...objects, ...singletons, ...blocks, ...documents]
+import producto from './producto'
+
+export const schemaTypes = [producto]

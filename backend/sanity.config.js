@@ -21,12 +21,8 @@ export default defineConfig({
   dataset: 'production',
 
   plugins: [
-    structureTool({structure}),
-    colorInput(),
-    imageHotspotArrayPlugin(),
-    customDocumentActions(),
-    media(),
-    ...(isDev ? devOnlyPlugins : []),
+    structureTool(),
+    visionTool(),
   ],
 
   schema: {
