@@ -1,80 +1,173 @@
 ---
 // --- ZONA DE JAVASCRIPT (Servidor) ---
 import { client, urlFor } from '../lib/sanity';
-
 // 1. Pedimos los productos a Sanity (GROQ Query)
 const productos = await client.fetch(`*[_type == "producto"]`);
 ---
 
 <html lang="es">
-	<head>
-    	<meta charset="utf-8" />
-    	<title>Catálogo 3D</title>
-    	<meta name="viewport" content="width=device-width" />
-  	</head>
-  	<nav style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #111; color: white;">
-		<a href="/">Inicio</a>
-		<h1>Galactics3D</h1>
-		<a href="/contacto">Contacto</a>
-	</nav>
-  	<body>
-    	
+  <head>
+    <meta charset="utf-8" />
+    <title>Catálogo 3D</title>
+    <meta name="viewport" content="width=device-width" />
+  </head>
 
-    	<div class="grid-productos">
-      	{	productos.map((producto) => (
-        	<div class="tarjeta">
-          	{producto.imagen && (
-            	<img 
-              		src={urlFor(producto.imagen).width(300).url()} 
-              	alt={producto.nombre} 
-            	/>
-          	)}
+  <body>
 
-          <h2>{producto.nombre}</h2>
-          <p class="precio">${producto.precio} MXN</p>
-          
-          <button 
-			class="btn-whatsapp" 
-			data-nombre={producto.nombre} 
-			data-precio={producto.precio}
-			>
-			Pedir por WhatsApp
-		  </button>
-        </div>
-      ))}
-    </div>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <h1 class="logo">Galactics3D</h1>
+      <ul class="nav-links">
+        <li><a href="/">Inicio</a></li>
+        <li><a href="#productos">Productos</a></li>
+        <li><a href="https://wa.me/5214922177766" target="_blank">Contacto</a></li>
+      </ul>
+    </nav>
 
+    <!-- CONTENIDO -->
+    <main id="productos">
+      <div class="grid-productos">
+        {productos.map((producto) => (
+          <div class="tarjeta">
+            {producto.imagen && (
+              <img 
+                src={urlFor(producto.imagen).width(300).url()} 
+                alt={producto.nombre} 
+              />
+            )}
+
+            <h2>{producto.nombre}</h2>
+            <p class="precio">${producto.precio} MXN</p>
+
+            <button 
+              class="btn-whatsapp" 
+              data-nombre={producto.nombre} 
+              data-precio={producto.precio}
+            >
+              Pedir por WhatsApp
+            </button>
+          </div>
+        ))}
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p>© {new Date().getFullYear()} Catálogo 3D</p>
+      <p>Impresión 3D bajo pedido</p>
+    </footer>
+
+    <!-- ESTILOS -->
     <style>
-      body { font-family: sans-serif; padding: 2rem; background: #222; color: white; }
-      .grid-productos { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
-      .tarjeta { border: 1px solid #444; padding: 10px; border-radius: 8px; background: #333; }
-      img { width: 100%; height: auto; border-radius: 4px; }
-      .precio { color: #4ade80; font-weight: bold; font-size: 1.2rem; }
-      button { background: #25D366; color: white; border: none; padding: 10px; width: 100%; cursor: pointer; border-radius: 5px; margin-top: 10px;}
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        background: #222;
+        color: white;
+      }
+
+      /* NAVBAR */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        background: #111;
+        border-bottom: 1px solid #333;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        color: #4ade80;
+      }
+
+      .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 1.5rem;
+        margin: 0;
+        padding: 0;
+      }
+
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .nav-links a:hover {
+        color: #4ade80;
+      }
+
+      /* CONTENIDO */
+      main {
+        padding: 2rem;
+      }
+
+      .grid-productos {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+      }
+
+      .tarjeta {
+        border: 1px solid #444;
+        padding: 10px;
+        border-radius: 8px;
+        background: #333;
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+      }
+
+      .precio {
+        color: #4ade80;
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      button {
+        background: #25D366;
+        color: white;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 10px;
+      }
+
+      /* FOOTER */
+      .footer {
+        text-align: center;
+        padding: 1.5rem;
+        background: #111;
+        border-top: 1px solid #333;
+        font-size: 0.9rem;
+        color: #aaa;
+      }
     </style>
-	<script>
-  // 1. Buscamos todos los botones en la página
-  const botones = document.querySelectorAll('.btn-whatsapp');
 
-  // 2. Le damos instrucciones a cada uno
-  botones.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      // Leemos los datos guardados en el botón
-      const nombre = e.target.dataset.nombre;
-      const precio = e.target.dataset.precio;
-      
-      // TU NÚMERO AQUÍ (Ponlo con código de país, sin el +)
-      // Ejemplo México: 521 + lada + numero
-      const miNumero = "5214922177766"; 
+    <!-- SCRIPT WHATSAPP -->
+    <script>
+      const botones = document.querySelectorAll('.btn-whatsapp');
 
-      // Creamos el mensaje
-      const mensaje = `Hola! Me interesa imprimir el modelo: *${nombre}* que vi en tu catálogo`;
+      botones.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const nombre = e.target.dataset.nombre;
+          const precio = e.target.dataset.precio;
 
-      // Abrimos WhatsApp
-      const url = `https://wa.me/${miNumero}?text=${encodeURIComponent(mensaje)}`;
-      window.open(url, '_blank');
-    });
-  });
-</script>
+          const miNumero = "5214922177766";
+          const mensaje = `Hola! Me interesa imprimir el modelo: *${nombre}* que vi en tu catálogo`;
+
+          const url = `https://wa.me/${miNumero}?text=${encodeURIComponent(mensaje)}`;
+          window.open(url, '_blank');
+        });
+      });
+    </script>
+
   </body>
 </html>
