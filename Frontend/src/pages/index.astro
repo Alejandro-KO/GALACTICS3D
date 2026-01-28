@@ -1,5 +1,7 @@
+
 ---
 // --- ZONA DE JAVASCRIPT (Servidor) ---
+export const prerender = false;
 import { client, urlFor } from '../lib/sanity';
 // 1. Pedimos los productos a Sanity (GROQ Query)
 const productos = await client.fetch(`*[_type == "producto"]`);
