@@ -12,13 +12,13 @@ const productos = await client.fetch(`*[_type == "producto"]`);
     	<title>Catálogo 3D</title>
     	<meta name="viewport" content="width=device-width" />
   	</head>
-  	<nav>
+  	<nav style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #111; color: white;">
 		<a href="/">Inicio</a>
-		<a href="/catalogo">Catálogo</a>
+		<h1>Galactics3D</h1>
 		<a href="/contacto">Contacto</a>
 	</nav>
   	<body>
-    	<h1>Mis Impresiones 3D</h1>
+    	
 
     	<div class="grid-productos">
       	{	productos.map((producto) => (
@@ -29,7 +29,7 @@ const productos = await client.fetch(`*[_type == "producto"]`);
               	alt={producto.nombre} 
             	/>
           	)}
-			
+
           <h2>{producto.nombre}</h2>
           <p class="precio">${producto.precio} MXN</p>
           
