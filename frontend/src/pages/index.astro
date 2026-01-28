@@ -161,7 +161,7 @@ const productos = await client.fetch(`*[_type == "producto"]`);
           const precio = e.target.dataset.precio;
 
           const miNumero = "5214922177766";
-          const mensaje = `Hola! Me interesa imprimir el modelo: *${nombre}* que vi en tu catálogo`;
+          const mensaje = `Hola! Me interesa adquirir el modelo: *${nombre}* que vi en tu catálogo`;
 
           const url = `https://wa.me/${miNumero}?text=${encodeURIComponent(mensaje)}`;
           window.open(url, '_blank');
