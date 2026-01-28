@@ -7,24 +7,29 @@ const productos = await client.fetch(`*[_type == "producto"]`);
 ---
 
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <title>Catálogo 3D</title>
-    <meta name="viewport" content="width=device-width" />
-  </head>
-  <body>
-    <h1>Mis Impresiones 3D</h1>
+	<head>
+    	<meta charset="utf-8" />
+    	<title>Catálogo 3D</title>
+    	<meta name="viewport" content="width=device-width" />
+  	</head>
+  	<nav>
+		<a href="/">Inicio</a>
+		<a href="/catalogo">Catálogo</a>
+		<a href="/contacto">Contacto</a>
+	</nav>
+  	<body>
+    	<h1>Mis Impresiones 3D</h1>
 
-    <div class="grid-productos">
-      {productos.map((producto) => (
-        <div class="tarjeta">
-          {producto.imagen && (
-            <img 
-              src={urlFor(producto.imagen).width(300).url()} 
-              alt={producto.nombre} 
-            />
-          )}
-          
+    	<div class="grid-productos">
+      	{	productos.map((producto) => (
+        	<div class="tarjeta">
+          	{producto.imagen && (
+            	<img 
+              		src={urlFor(producto.imagen).width(300).url()} 
+              	alt={producto.nombre} 
+            	/>
+          	)}
+			
           <h2>{producto.nombre}</h2>
           <p class="precio">${producto.precio} MXN</p>
           
